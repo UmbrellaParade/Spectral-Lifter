@@ -4,6 +4,16 @@
 > stereo processing for online use. The deployed app runs on CPU and outputs
 > browser-compatible 24-bit WAV files.
 
+### GitHub Codespaces test deployment
+
+[Open in GitHub Codespaces](https://codespaces.new/UmbrellaParade/Spectral-Lifter?quickstart=1)
+
+The Codespaces configuration installs the audio dependencies, starts the
+Gradio app automatically, and forwards port `7860`. For a public test link,
+set that port's visibility to **Public**. Codespaces stop after their idle
+timeout, so this option is intended for temporary testing rather than
+always-on hosting.
+
 [日本語](#日本語) | [English](#english)
 
 ---
