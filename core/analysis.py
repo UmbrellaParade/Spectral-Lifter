@@ -13,7 +13,9 @@ class Analyzer:
         Returns useful data for the upscaler.
         """
         if y.ndim > 1:
-            y_mono = librosa.to_mono(y if y.shape[0] > y.shape[1] else y.T)
+            # load_audio returns (channels, samples), which is the layout
+            # librosa.to_mono expects.
+            y_mono = librosa.to_mono(y if y.shape[0] <= 2 else y.T)
         else:
             y_mono = y
 

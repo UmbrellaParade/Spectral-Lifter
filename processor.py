@@ -34,8 +34,10 @@ class AudioProcessor:
         # Save output
         dir_name = os.path.dirname(file_path)
         base_name = os.path.basename(file_path)
-        name, ext = os.path.splitext(base_name)
-        output_path = os.path.join(dir_name, f"{name}_lifter{ext}")
+        name, _ = os.path.splitext(base_name)
+        # WAV is consistently supported by SoundFile and web browsers even when
+        # the uploaded source is MP3, M4A, or another compressed format.
+        output_path = os.path.join(dir_name, f"{name}_lifter.wav")
             
         save_audio(output_path, y_final, sr)
         return output_path

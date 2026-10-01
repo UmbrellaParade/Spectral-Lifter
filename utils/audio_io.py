@@ -14,7 +14,7 @@ def save_audio(file_path, y, sr):
     # soundfile expects (samples, channels)
     if y.shape[0] < y.shape[1] and y.shape[0] <= 2:
         y = y.T
-    sf.write(file_path, y, sr, subtype='FLOAT')
+    sf.write(file_path, y, sr, subtype='PCM_24')
 
 def finalize_audio(y, sr, target_lufs=-14.0, max_true_peak=-1.0):
     """

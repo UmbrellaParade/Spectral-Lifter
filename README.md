@@ -1,5 +1,9 @@
 # Spectral Lifter (v1.2)
 
+> This fork includes a lightweight Render deployment configuration and fixes
+> stereo processing for online use. The deployed app runs on CPU and outputs
+> browser-compatible 24-bit WAV files.
+
 [日本語](#日本語) | [English](#english)
 
 ---

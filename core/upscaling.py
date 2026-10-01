@@ -1,29 +1,9 @@
-import torch
-import torch.nn as nn
 import numpy as np
 import librosa
-
-class HighFrequencyGenerator(nn.Module):
-    def __init__(self, input_dim=512, output_dim=256):
-        super().__init__()
-        # Simplified neural network architecture for predicting high frequencies
-        self.net = nn.Sequential(
-            nn.Linear(input_dim, 512),
-            nn.ReLU(),
-            nn.Linear(512, output_dim),
-            nn.Sigmoid()
-        )
-        
-    def forward(self, x):
-        return self.net(x)
 
 class Upscaler:
     def __init__(self, target_sr=48000):
         self.target_sr = target_sr
-        self.model = HighFrequencyGenerator()
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.model.to(self.device)
-        self.model.eval()
         
     def _shape_transients(self, y, sr):
         # Basic transient shaping via harmonic-percussive separation
@@ -37,19 +17,13 @@ class Upscaler:
         Reconstruct >16kHz band and shape transients.
         """
         if y.ndim > 1:
-            y_mono = librosa.to_mono(y if y.shape[0] > y.shape[1] else y.T)
+            y_mono = librosa.to_mono(y if y.shape[0] <= 2 else y.T)
         else:
             y_mono = y
 
         # --- 1. Spectral Bandwidth Extension (Neural/Heuristic) ---
-        S = np.abs(librosa.stft(y_mono))
-        S_tensor = torch.tensor(S, dtype=torch.float32).to(self.device)
-        
-        # Simulated Neural Pass (No-op without real weights)
-        with torch.no_grad():
-            pass
-            
-        # V1.0 Heuristic approach: Spectral folding/translation
+        # V1.2 uses a lightweight heuristic approach. The previous PyTorch model
+        # had no trained weights and did not affect the output.
         # Pitch shift by one octave to generate harmonics above original cutoff
         y_exciter = librosa.effects.pitch_shift(y_mono, sr=sr, n_steps=12, res_type='soxr_hq')
         
