@@ -5,6 +5,9 @@
 > online use. The deployed app runs on CPU and outputs browser-compatible
 > 24-bit WAV files.
 
+Large WAV files can use the chunked uploader at `/large-wav`. It accepts WAV
+files up to 300 MB and avoids the single-request upload limit of Codespaces.
+
 ### GitHub Codespaces test deployment
 
 [Open in GitHub Codespaces](https://codespaces.new/UmbrellaParade/Spectral-Lifter?quickstart=1)

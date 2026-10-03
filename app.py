@@ -1,7 +1,9 @@
 import os
 
 import gradio as gr
+import uvicorn
 
+from large_wav import create_app
 from processor import AudioProcessor
 
 
@@ -29,7 +31,7 @@ with gr.Blocks(title="Spectral Lifter", delete_cache=(3600, 3600)) as demo:
     gr.Markdown(
         "**使い方:** 音声をアップロードして「音声を処理」を押してください。"
         "6分以内の音源に対応しています。処理には曲の長さに応じて数分かかる場合があります。"
-        " **GitHubテスト版の注意:** 大容量のWAVはアップロード制限にかかるため、MP3に変換してからお試しください。"
+        " **大容量WAV:** [専用アップロード画面](/large-wav)をご利用ください。"
     )
 
     with gr.Row():
@@ -47,8 +49,10 @@ with gr.Blocks(title="Spectral Lifter", delete_cache=(3600, 3600)) as demo:
     )
 
 if __name__ == "__main__":
-    demo.queue(default_concurrency_limit=1, max_size=5).launch(
-        server_name="0.0.0.0",
-        server_port=int(os.environ.get("PORT", "7860")),
-        show_error=True,
+    queued_demo = demo.queue(default_concurrency_limit=1, max_size=5)
+    server_app = create_app(queued_demo)
+    uvicorn.run(
+        server_app,
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", "7860")),
     )
